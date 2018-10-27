@@ -1,0 +1,62 @@
+---
+title: "Car Production"
+author: "Krishna Sai Patha (s3670773)"
+date: "27 October 2018"
+output: word_document
+---
+
+Plotly URL:   https://plot.ly/~Patha/3/#/
+
+Libraries:
+
+```{r setup, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(readr)
+library(plotly)
+```
+
+
+
+```{r}
+username <- "your username"
+apikey <- "you apikey"
+Sys.setenv("plotly_username"= username)
+Sys.setenv("plotly_api_key"= apikey)
+```
+
+
+Dataset:
+
+```{r }
+production <- read_csv("~/Data Visualization/production.csv")
+test <- data.frame(country=character(), year=integer(), value=integer(), stringsAsFactors = FALSE)
+for(country in unique(production$Country)) {
+  test[nrow(test)+1, ] <- list(country, 2010, production$`2010`[production$Country == country])
+  test[nrow(test)+1, ] <- list(country, 2011, production$`2011`[production$Country == country])
+  test[nrow(test)+1, ] <- list(country, 2012, production$`2012`[production$Country == country])
+  test[nrow(test)+1, ] <- list(country, 2013, production$`2013`[production$Country == country])
+  test[nrow(test)+1, ] <- list(country, 2014, production$`2014`[production$Country == country])
+  test[nrow(test)+1, ] <- list(country, 2015, production$`2015`[production$Country == country])
+}
+View(test)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r}
+g <- plot_ly(data= test,x=~country,y=~value,type = "scatter",color= ~year) 
+
+g<- g %>% layout(title="World Passenger Car Production(Selected Countries)",
+                 xaxis = list(zeroline = FALSE, title="Countries"),
+                yaxis = list(zeroline = FALSE, title="Thousands Of Vehicles"))
+g
+
+
+   api_create(g, filename = "World Passenger Car Production(Selected Countries)", sharing = "public")
+```
+
+From the plot we can see that Japan and United States being top most automobile indutries there is a huge decline in their production even though Japan has more production quantity than United States. we can also see there is a decline in Brazil also.We can also see a slighlty decline in the countries Germany,France and Australia.
