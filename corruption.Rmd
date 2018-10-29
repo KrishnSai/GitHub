@@ -1,0 +1,55 @@
+---
+title: "Corruption Perception Index"
+author: "Krishna Sai Patha"
+date: "29 October 2018"
+output: word_document
+---
+Data Source : 
+
+http://www.transparency.org/cpi2015
+
+Story(Article) URL: 
+
+https://www.tandfonline.com/doi/full/10.1080/17449626.2014.935982
+
+
+RPubs URL : http://rpubs.com/krishnasai/434576
+
+
+```{r setup, include=FALSE}
+library(plotly)
+library(readr)
+
+```
+
+
+
+Plots:
+
+Let's find which country has the highest CPI and which has the least.The bigger the numberThe Corruption Perception Index scores countries on a scale of 0-100, where 0 means that a country is perceived as highly corrupt and 100 means that a country is perceived as very clean.
+
+```{r}
+cpi <- read_csv("Data Visualization/Story Telling/cpi.csv")
+
+l <- list(color = toRGB("grey"), width = 0.5)
+
+# specify map projection/options
+g <- list(
+  showframe = FALSE,
+  showcoastlines = FALSE,
+  projection = list(type = 'Mercator')
+)
+
+ plot_geo(cpi) %>%
+  add_trace(
+    z = cpi$CPI, color =cpi$CPI, colors = 'Blues',
+    text = cpi$Country, locations = cpi$Code, marker = list(line = l)
+  ) %>%
+  colorbar(title = 'CPI') %>%
+  layout(
+    title = 'Global Corruption Perception Index 2012<br>Source:<a href="http://www.transparency.org/cpi2015">CPI Data</a>Article:<a href="https://www.tandfonline.com/doi/full/10.1080/17449626.2014.935982">TandFonline</a>',
+    geo = g
+  )
+```
+
+We can see that New Zealand, Finland, Denmark are the cleanest countries with low corruption and Somalia is highly corrupted country.
